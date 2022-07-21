@@ -45,7 +45,7 @@ class Training:
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        NotImplementedError
+        pass
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -80,6 +80,7 @@ class SportsWalking(Training):
                  height: float) -> None:
         super().__init__(action, duration, weight)
         self.height = height
+        pass
 
     def get_spent_calories(self)-> float:
         """Получить количество затраченных калорий для спортивной ходьбы."""
@@ -105,27 +106,42 @@ class Swimming(Training):
         super().__init__(action, duration, weight)
         self.length_pool = length_pool
         self.count_pool = count_pool
+        pass
 
     def get_mean_speed(self) -> float:
+        """Получить среднюю скорость движения."""
+        # длина_бассейна * count_pool
+        # / M_IN_KM / время_тренировки
         return ((self.length_pool * self.count_pool)
                 / self.M_IN_KM / self.duration)
 
     def get_spent_calories(self)-> float:
-        mean_speed = self.get_mean_speed()
-        return ((mean_speed + self.COEFF_ACTIVITY)
-                * self.SWIMMING_STYLE * self.weight)
+        """Получить количество затраченных калорий."""
+        # (средняя_скорость + 1.1) * 2 * вес
+        return (self.get_mean_speed() + 1.1) * 2 * self.weight
 
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    type_dict = {'SWM': Swimming, 'RUN': Running, 'WLK': SportsWalking}
-    return type_dict[workout_type](*data)
+    training_dict = {
+        'SWM': Swimming,
+        'RUN': Running,
+        'WLK': SportsWalking
+    }
+    if workout_type in training_dict:
+        return training_dict[workout_type](*data)
+    else:
+        raise TypeError(f'Тренировка с кодом {workout_type} не распознана')
 
 
 def main(training: Training) -> None:
     """Главная функция."""
-    info = training.show_training_info()
-    print(info.get_message())
+    if training is not None:
+        info = training.show_training_info()
+        message_info = info.get_message()
+        print(message_info)
+    else:
+        print('Error')
 
 
 if __name__ == '__main__':
