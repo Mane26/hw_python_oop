@@ -1,10 +1,9 @@
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 
 
 @dataclass
 class InfoMessage:
     """Информационное сообщение о тренировке."""
-    
     def __init__(self,
                  training_type: str,
                  duration: float,
@@ -120,7 +119,7 @@ class Swimming(Training):
         return ((self.length_pool * self.count_pool)
                 / self.M_IN_KM / self.duration)
 
-    def get_spent_calories(self)-> float:
+    def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
         # (средняя_скорость + 1.1) * 2 * вес
         return (self.get_mean_speed() + 1.1) * 2 * self.weight
@@ -142,13 +141,11 @@ def read_package(workout_type: str, data: list) -> Training:
 def main(training: Training) -> None:
     """Главная функция."""
     info = training.show_training_info()
-    message_info = info.get_message()
     print(info.get_message())
     
 
 if __name__ == '__main__':
-    packages = [
-        ('SWM', [720, 1, 80, 25, 40]),
+    packages = [('SWM', [720, 1, 80, 25, 40]),
         ('RUN', [15000, 1, 75]),
         ('WLK', [9000, 1, 75, 180]),
     ]
