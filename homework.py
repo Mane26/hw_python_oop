@@ -8,12 +8,12 @@ class InfoMessage:
     duration: float
     distance: float
     speed: float
-    сalories: float
-    text_message=('Тип тренировки: {training_type}; '
+    calories: float
+    text_message: str =('Тип тренировки: {training_type}; '
                  'Длительность: {duration:3f} ч.; '
-                 'Дистанция: {self.distance:.3f} км; '
-                 'Ср.скорость: {self.speed:.3f} км/ч; '
-                 'Потрачено ккал: {self.calories:.3f}. '
+                 'Дистанция: {distance:.3f} км; '
+                 'Ср.скорость: {speed:.3f} км/ч; '
+                 'Потрачено ккал: {calories:.3f}. '
                  )
 
     def get_message(self) -> str:
