@@ -4,16 +4,17 @@ from dataclasses import asdict, dataclass
 @dataclass
 class InfoMessage:
     """Информационное сообщение о тренировке."""
-    training_type: str
-    duration: float
-    distance: float
-    speed: float
-    calories: float
-    text_message: str =('Тип тренировки: {training_type}; '
-                 'Длительность: {duration:3f} ч.; '
-                 'Дистанция: {distance:.3f} км; '
-                 'Ср.скорость: {speed:.3f} км/ч; '
-                 'Потрачено ккал: {calories:.3f}. '
+    def __init__(self,
+                 training_type: str,
+                 duration: float,
+                 distance: float,
+                 speed: float,
+                 calories: float) -> None:
+        text_message: str =('Тип тренировки: {training_type}; '
+                 'Длительность: {duration: .3f} ч.; '
+                 'Дистанция: {distance: .3f} км; '
+                 'Ср.скорость: {speed: .3f} км/ч; '
+                 'Потрачено ккал: {calories: .3f}. '
                  )
 
     def get_message(self) -> str:
@@ -64,36 +65,35 @@ class Training:
 
 class Running(Training):
     """Тренировка: бег."""
-    SPEED_MULTIPLICATOR: float = 18
-    RUNNING_COEFF: float = 20
 
-    def get_spent_calories(self)-> float:
-        """"Получить количество затраченных калорий для бега."""
-        return ((self.SPEED_MULTIPLICATOR * self.get_mean_speed()
-                - self.RUNNING_COEFF) * self.weight
-                / self.M_IN_KM * self.duration * self.MIN_IN_HOURS)
+    def get_spent_calories(self) -> float:
+        """Получить количество затраченных калорий."""
+        # (18 * средняя_скорость - 20) * вес_спортсмена / M_IN_KM *
+        # время_тренировки_в_минутах.
+        return ((18 * self.get_mean_speed() - 20)
+                * self.weight / self.M_IN_KM * self.duration * 60)
 
 
 class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
-    COEFF_FOR_WEIGHT: float = 0.035
-    COEFF_FOR_HEIGHT: float = 0.029
 
     def __init__(self,
                  action: int,
                  duration: float,
                  weight: float,
-                 height: float) -> None:
+                 height: float
+                 ) -> None:
         super().__init__(action, duration, weight)
         self.height = height
         pass
 
-    def get_spent_calories(self)-> float:
-        """Получить количество затраченных калорий для спортивной ходьбы."""
-        return ((self.COEFF_FOR_WEIGHT * self.weight
+    def get_spent_calories(self) -> float:
+        """Получить количество затраченных калорий."""
+        # (0.035 * вес + (средняя_скорость**2 // рост) * 0.029 * вес)
+        #  * время_тренировки_в_минутах
+        return (0.035 * self.weight
                 + (self.get_mean_speed()**2 // self.height)
-                * self.COEFF_FOR_HEIGHT * self.weight)
-                * self.duration * self.MIN_IN_HOURS)
+                * 0.029 * self.weight) * self.duration * 60
 
 
 class Swimming(Training):
