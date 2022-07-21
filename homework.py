@@ -1,10 +1,16 @@
 class InfoMessage:
     """Информационное сообщение о тренировке."""
-    training_type: str
-    duration: float
-    distance: float
-    speed: float
-    calories: float
+    def __init__(self, training_type: str,
+                 duration: float,
+                 distance: float,
+                 speed: float,
+                 calories: float) -> None:
+        self.training_type = training_type
+        self.duration = duration
+        self.distance = distance
+        self.speed = speed
+        self.calories = calories
+
 
     def get_message(self) -> str:
         return(f'Тип тренировки: {self.training_type}; '
@@ -55,7 +61,7 @@ class Running(Training):
     SPEED_MULTIPLICATOR: float = 18
     RUNNING_COEFF: float = 20
 
-    def get_spent_calories(self):
+    def get_spent_calories(self)-> float:
         """"Получить количество затраченных калорий для бега."""
         return ((self.SPEED_MULTIPLICATOR * self.get_mean_speed()
                 - self.RUNNING_COEFF) * self.weight
@@ -75,7 +81,7 @@ class SportsWalking(Training):
         super().__init__(action, duration, weight)
         self.height = height
 
-    def get_spent_calories(self):
+    def get_spent_calories(self)-> float:
         """Получить количество затраченных калорий для спортивной ходьбы."""
         return ((self.COEFF_FOR_WEIGHT * self.weight
                 + (self.get_mean_speed()**2 // self.height)
@@ -88,6 +94,7 @@ class Swimming(Training):
     LEN_STEP: float = 1.38
     COEFF_ACTIVITY: float = 1.1
     SWIMMING_STYLE: float = 2
+    training_type: str = 'SWM'
 
     def __init__(self,
                  action: int,
@@ -100,10 +107,10 @@ class Swimming(Training):
         self.count_pool = count_pool
 
     def get_mean_speed(self) -> float:
-        return (self.length_pool * self.count_pool
+        return ((self.length_pool * self.count_pool)
                 / self.M_IN_KM / self.duration)
 
-    def get_spent_calories(self):
+    def get_spent_calories(self)-> float:
         mean_speed = self.get_mean_speed()
         return ((mean_speed + self.COEFF_ACTIVITY)
                 * self.SWIMMING_STYLE * self.weight)
