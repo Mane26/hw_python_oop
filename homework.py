@@ -10,11 +10,11 @@ class InfoMessage:
     speed: float
     calories: float
     text_message = ('Тип тренировки: {training_type}; '
-                    'Длительность: {duration:3f} ч.; '
-                    'Дистанция: {distance:.3f} км; '
-                    'Ср.скорость: {speed:.3f} км/ч; '
-                    'Потрачено ккал: {calories:.3f}. '
-                   )
+                'Длительность: {duration:.3f} ч.; '
+                'Дистанция: {distance:.3f} км; '
+                'Ср. скорость: {speed:.3f} км/ч; '
+                'Потрачено ккал: {calories:.3f}.')
+
     def get_message(self) -> str:
         return self.text_message.format(
             training_type=self.training_type,
@@ -29,7 +29,7 @@ class Training:
     """Базовый класс тренировки."""
     LEN_STEP: float = 0.65
     M_IN_KM: float = 1000
-    MIN_IN_HOURS: float = 60
+    MIN_IN_HOURS: int = 60
 
     def __init__(self,
                  action: int,
