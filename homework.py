@@ -36,6 +36,7 @@ class Training:
                  duration: float,
                  weight: float,
                  ) -> None:
+        """__init__ ничего не возвращает."""
         self.action = action
         self.duration = duration
         self.weight = weight
@@ -47,10 +48,11 @@ class Training:
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость движения."""
         return self.get_distance() / self.duration
+        pass
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        raise NotImplementedError(self._class_.name_)
+        raise NotImplementedError
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -85,6 +87,7 @@ class SportsWalking(Training):
                  duration: float,
                  weight: float,
                  height: float) -> None:
+        """__init__ ничего не возвращает."""
         super().__init__(action, duration, weight)
         self.height = height
 
@@ -108,6 +111,7 @@ class Swimming(Training):
                  weight: float,
                  length_pool: float,
                  count_pool: float) -> None:
+        """__init__ ничего не возвращает."""
         super().__init__(action, duration, weight)
         self.length_pool = length_pool
         self.count_pool = count_pool
