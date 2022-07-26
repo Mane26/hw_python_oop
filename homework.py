@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Dict, Type
 
 
 @dataclass
@@ -30,6 +31,9 @@ class Training:
     LEN_STEP: float = 0.65
     M_IN_KM: float = 1000
     MIN_IN_HOURS: int = 60
+    action: int
+    duration: float
+    weight: float
 
     def __init__(self,
                  action: int,
@@ -48,11 +52,10 @@ class Training:
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость движения."""
         return self.get_distance() / self.duration
-        pass
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        raise NotImplementedError
+        pass
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -104,6 +107,11 @@ class Swimming(Training):
     LEN_STEP: float = 1.38
     COEFF_ACTIVITY: float = 1.1
     SWIMMING_STYLE: float = 2
+    action: int
+    duration: float
+    weight: float
+    length_pool: float
+    count_pool: float
 
     def __init__(self,
                  action: int,
@@ -131,7 +139,7 @@ class Swimming(Training):
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    training_dict = {
+    training_dict: Dict[str, Type[Training]] = {
         'SWM': Swimming,
         'RUN': Running,
         'WLK': SportsWalking
